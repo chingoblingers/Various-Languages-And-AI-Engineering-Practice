@@ -49,7 +49,7 @@ const userForm: React.JSX.Element = <form>
 <label htmlFor="status"> Status </label>
 <select value={formData.status} onChange={(e)=>setFormData(prevData=>{
   const newStatus = e.target.value as BountyStatus
-  return {...prevData, statu: newStatus}
+  return {...prevData, status: newStatus}
   })}>
   <option value="available">Avaialbe</option>
   <option value="accepted">Accepted </option>
