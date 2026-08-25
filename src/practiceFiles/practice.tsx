@@ -41,7 +41,23 @@ export default function BountyBoard(): React.JSX.Element {
   status: "available"
 })
 
-const userForm: React.JSX.Element = <form>
+function handleSubmit(e:React.FormEvent<HTMLFormElement>):void{
+e.preventDefault()
+const bountyIds: number[] = bounty.map((bount:Bounty):number=> bount.id)
+let maxId: number = bountyIds.length === 0 ? 0 : Math.max(...bountyIds)
+const newBounty ={
+  id: ++maxId,
+  ...formData
+}
+setBounty(prevBounty => [...prevBounty, newBounty])
+setFormData({
+  title: '',
+  reward: 0,
+  status: "available"
+})
+}
+
+const userForm: React.JSX.Element = <form onSubmit={handleSubmit}>
 <label htmlFor="title"> Title </label>  
 <input type="text" id="title" name="title" placeholder="Billy the Kid" value={formData.title} onChange={(e)=>{setFormData(prevData => {return {...prevData, title: e.target.value}})}}/>
 <label htmlFor="reward"> Reward</label>
@@ -55,6 +71,7 @@ const userForm: React.JSX.Element = <form>
   <option value="accepted">Accepted </option>
   <option value="completed">Completed</option>
 </select>
+<button>Submit</button>
 </form>
 
   function advanceBountyStatus(id:number):void{
