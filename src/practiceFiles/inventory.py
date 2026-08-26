@@ -32,3 +32,9 @@ def remove_item(inventory, item_id):
         if item['id'] == item_id:
            return inventory.pop(index)
     return None        
+
+def find_item_by_name(inventory, name):
+    for item in inventory:
+        if item['name'].lower() == name.lower():
+            return item
+    return None
