@@ -13,7 +13,7 @@ def get_inventory_summary(inventory):
         items += item["quantity"]
         value += item["value"] * item["quantity"]
     return {"total_items": items, "total_value": value, "most_valueable_item": top_item['name']}
-    
 
-summary = get_inventory_summary(inventory)
-print(summary)
+def get_items_by_category(inventory, category):
+    return [item for item in inventory if item["category"] == category]
+    
