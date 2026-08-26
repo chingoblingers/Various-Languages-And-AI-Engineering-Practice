@@ -26,3 +26,9 @@ def restock_item(inventory, item_id, amount):
             item['quantity'] += amount
             return item
     return None
+
+def remove_item(inventory, item_id):
+    for index, item in enumerate(inventory):
+        if item['id'] == item_id:
+           return inventory.pop(index)
+    return None        
