@@ -41,3 +41,8 @@ def find_item_by_name(inventory, name):
 
 def get_items_above_value(inventory, minimum_value):
     return [item for item in inventory if item["value"] * item["quantity"] >= minimum_value]
+
+def sort_inventory_by_value(inventory):
+    return sorted(inventory, key=lambda item: item['value'], reverse=True)
+
+print(sort_inventory_by_value(inventory))
