@@ -20,3 +20,9 @@ def get_items_by_category(inventory, category):
 def get_low_stock_items(inventory, threshold):
     return [item for item in inventory if item['quantity'] <= threshold]
 
+def restock_item(inventory, item_id, amount):
+    for item in inventory:
+        if item['id'] == item_id:
+            item['quantity'] += amount
+            return item
+    return None
