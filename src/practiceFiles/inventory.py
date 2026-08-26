@@ -16,4 +16,7 @@ def get_inventory_summary(inventory):
 
 def get_items_by_category(inventory, category):
     return [item for item in inventory if item["category"] == category]
-    
+
+def get_low_stock_items(inventory, threshold):
+    return [item for item in inventory if item['quantity'] <= threshold]
+
