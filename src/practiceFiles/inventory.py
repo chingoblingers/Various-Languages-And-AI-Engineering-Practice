@@ -38,3 +38,6 @@ def find_item_by_name(inventory, name):
         if item['name'].lower() == name.lower():
             return item
     return None
+
+def get_items_above_value(inventory, minimum_value):
+    return [item for item in inventory if item["value"] * item["quantity"] >= minimum_value]
