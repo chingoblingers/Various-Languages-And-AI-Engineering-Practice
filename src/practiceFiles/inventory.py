@@ -45,4 +45,14 @@ def get_items_above_value(inventory, minimum_value):
 def sort_inventory_by_value(inventory):
     return sorted(inventory, key=lambda item: item['value'], reverse=True)
 
-print(sort_inventory_by_value(inventory))
+def get_category_totals(inventory):
+    totals = {}
+for item in inventory:
+    if item["category"] not in totals:
+        totals[item["category"]] = item["quantity"]
+    else:
+        totals["category"] += item['quantity']
+return totals
+        
+            
+
