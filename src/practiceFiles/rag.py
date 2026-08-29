@@ -51,4 +51,13 @@ def get_largest_source(chunks):
         )
     return max(total_words_by_source, key = lambda source: total_words_by_source[source])
     
-    
+def get_source_summary(chunks):
+    summary = {}
+    for chunk in chunks:
+        if chunk['source'] not in summary:
+            summary[chunk['source']] = {
+                "chunk_count" : 0,
+                "word_count" : 0
+            }
+    summary[chunk["source"]]["chunk_count"]+= 1
+    summary[chunk["source"]]['word_count'] += len(chunk['content'].split())
