@@ -42,5 +42,13 @@ def get_source_word_totals(chunks):
 # total_words_by_source[chunk["source"]] = (
 #    total_words_by_source.get(chunk["source"], 0) + chunk_word_count) 
     return total_words_by_source
+
+def get_largest_source(chunks):
+    total_words_by_source = {}
+    for chunk in chunks:
+        total_words_by_source[chunk['source']] = (
+            total_words_by_source.get(chunk['source'], 0) + len(chunk['content'].split())
+        )
+    return max(total_words_by_source, key = lambda source: total_words_by_source[source])
     
     
