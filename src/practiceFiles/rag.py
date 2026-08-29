@@ -14,4 +14,5 @@ def get_total_words(chunks):
       total_chunks += len(chunk["content"].split())
     return total_chunks
 
-print(get_total_words(chunks))
+def get_long_chunks(chunks, minimum_words):
+    return [chunk for chunk in chunks if len(chunk['content'].split()) >= minimum_words]
