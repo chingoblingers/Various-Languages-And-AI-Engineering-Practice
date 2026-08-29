@@ -16,3 +16,24 @@ def get_total_words(chunks):
 
 def get_long_chunks(chunks, minimum_words):
     return [chunk for chunk in chunks if len(chunk['content'].split()) >= minimum_words]
+
+def count_chunks_by_source(chunks):
+    source_chunks = {}
+    for chunk in chunks:
+        if chunk["source"] not in source_chunks:
+            source_chunks[chunk['source']] = 1
+        else:
+            source_chunks[chunk["source"]] += 1
+    return source_chunks
+
+def get_source_word_totals(chunks):
+    total_words_by_source = {}
+    for chunk in chunks:
+        chunk_word_count = len(chunk["content"].split())
+        if chunk['source'] not in total_words_by_source:
+            total_words_by_source[chunk['source']] = chunk_word_count
+        else:
+            total_words_by_source[chunk['source']] += chunk_word_count
+    return total_words_by_source
+    
+    
