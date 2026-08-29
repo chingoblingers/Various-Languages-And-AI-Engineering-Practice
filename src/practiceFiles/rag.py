@@ -30,10 +30,17 @@ def get_source_word_totals(chunks):
     total_words_by_source = {}
     for chunk in chunks:
         chunk_word_count = len(chunk["content"].split())
-        if chunk['source'] not in total_words_by_source:
-            total_words_by_source[chunk['source']] = chunk_word_count
-        else:
-            total_words_by_source[chunk['source']] += chunk_word_count
+#        if chunk['source'] not in total_words_by_source:
+#            total_words_by_source[chunk['source']] = chunk_word_count
+#        else:
+#            total_words_by_source[chunk['source']] += chunk_word_count
+#-- Here is another way you can write it without the if else. 
+   current_chunk_total = total_words_by_source.get(chunk['source'], 0)
+   overall_chunk_total = current_chunk_total + chunk_word_count
+   total_words_by_source[chunk['source']] = overall_chunk_total
+#  Heres a compressed version once your better at the above
+# total_words_by_source[chunk["source"]] = (
+#    total_words_by_source.get(chunk["source"], 0) + chunk_word_count) 
     return total_words_by_source
     
     
