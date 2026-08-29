@@ -8,3 +8,10 @@ chunks = [
 def get_chunks_by_source(chunks, source):
     return [chunk for chunk in chunks if chunk["source"] == source]
 
+def get_total_words(chunks):
+    total_chunks = 0
+    for chunk in chunks:
+      total_chunks += len(chunk["content"].split())
+    return total_chunks
+
+print(get_total_words(chunks))
