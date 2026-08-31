@@ -27,7 +27,7 @@ async function runDiagnostics(msg:string):Promise<string>{
     if(!response.ok){
         throw new Error(`Diagnostics request failed: ${response.status}`)
     }
-    const data = await response.json()
+    const data:{diagnostic:string} = await response.json()
     return data.diagnostic
 }
 switch(output.route){
@@ -42,6 +42,22 @@ switch(output.route){
     case 'diagnostics':
         context = await runDiagnostics(userMessage)
 }
+
+const { text } = await generateText({
+  model: "ai-model",
+  prompt: `
+    Answer the user's question.
+
+    Use the provided context if it contains useful information.
+    If no context was provided, answer from the user's message and your existing knowledge.
+
+    Context:
+    ${context}
+
+    User message:
+    ${userMessage}
+  `
+})
 
 }catch(error){
     console.error(error)
