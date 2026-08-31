@@ -13,4 +13,11 @@ const routingSchema = z.object({
         Are you an AI - used direct route.`)
 })
 
-type SchemaDecision = z.infer<typeof routingSchema>
+type RoutingDecision = z.infer<typeof routingSchema>
+
+const aiResponse = await generateObject({
+    model : 'ai-model',
+    schema: routingSchema,
+    prompt: `You awnser the users question in detail and ask for follow ups. 
+    Before answering detirmine what schema route the question falls under and if more information and tools are needed. `
+})
