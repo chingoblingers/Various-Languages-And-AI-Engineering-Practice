@@ -1,5 +1,4 @@
 import {z} from 'zod'
-type Route = "direct" | "knowledge_base" | "web";
 
 const routingSchema = z.object({
     "route" : z.enum(['direct', "knowledge_base", "web"]).describe(
@@ -8,16 +7,25 @@ const routingSchema = z.object({
         Use the web route for current day information or when the user asks for non company info that requires knowledge
         you do not have currently.`
     ),
-    "reason": z.string().describe(`I need info on company policies - Used knowledge_base route
-        I need info on some similar places iin the area - Used web search
-        Are you an AI - used direct route.`)
+    "reason": z.string().describe(`Describe the reason why the determined route fits best.`)
 })
 
 type RoutingDecision = z.infer<typeof routingSchema>
 
-const aiResponse = await generateObject({
+let userMsg = 'how do i fix my computers fans making too much noise'
+
+const aiQuestion = await generateObject({
     model : 'ai-model',
     schema: routingSchema,
-    prompt: `You awnser the users question in detail and ask for follow ups. 
-    Before answering detirmine what schema route the question falls under and if more information and tools are needed. `
+    prompt: `Decide what is the best route to answer the users following user question ${userMsg}`
 })
+
+const answer = aiQuestion.object
+
+if (answer.route === "direct"){
+ getAiResponse()    
+}else if(answer.route === 'knowledge_base'){
+searchKnowledgeBase()
+}else{
+searchWeb()
+}
