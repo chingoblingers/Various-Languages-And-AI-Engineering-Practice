@@ -22,6 +22,14 @@ const {output} = await generateText({
     prompt: `Categorize the users question according to the schema. user question: ${userMessage}`
 })
 let context: string = ""
+async function runDiagnostics(msg:string):Promise<string>{
+    const response = await fetch("http://127.0.0.1:8000/diagnostics", {method:'POST', headers:{'Content-Type': 'application/json'}, "body":JSON.stringify({"message": msg})})
+    if(!response.ok){
+        throw new Error(`Diagnostics request failed: ${response.status}`)
+    }
+    const data = await response.json()
+    return data.diagnostic
+}
 switch(output.route){
     case "direct":
         break
@@ -31,6 +39,8 @@ switch(output.route){
     case 'web':
         context = await searchWeb(userMessage)
         break
+    case 'diagnostics':
+        context = await runDiagnostics(userMessage)
 }
 
 }catch(error){
