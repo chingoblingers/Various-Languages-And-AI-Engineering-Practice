@@ -14,6 +14,10 @@ type RoutingDecision = z.infer<typeof routingSchema>
 
 let userMsg = 'how do i fix my computers fans making too much noise'
 
+let context: string = ""
+
+try{
+
 const aiQuestion = await generateObject({
     model : 'ai-model',
     schema: routingSchema,
@@ -23,9 +27,27 @@ const aiQuestion = await generateObject({
 const answer = aiQuestion.object
 
 if (answer.route === "direct"){
- getAiResponse()    
+const directUserResponse = await generateText({
+    model: 'ai-model',
+    prompt: `answer users question ${userMsg}`
+})
+return directUserResponse.text
+
 }else if(answer.route === 'knowledge_base'){
-searchKnowledgeBase()
+ context = await searchKnowledgeBase(userMsg)
 }else{
-searchWeb()
+ context = await searchWeb(userMsg)
+}
+
+const aiUserResponse = await generateText({
+model: "ai-model",
+prompt: `Answer the user's question using the context and Question provided. Context:${context}, Question:${userMsg}`
+})
+
+return aiUserResponse.text
+
+
+}catch(error){
+    console.error(error)
+   return res.status(500).json({message: "unable to process request"})
 }
