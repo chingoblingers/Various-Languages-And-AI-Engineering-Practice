@@ -1,8 +1,9 @@
+import 'dotenv/config'
 import {z} from 'zod'
 import {generateText, Output} from 'ai'
 import {openai} from '@ai-sdk/openai'
 
-const model = oepnai('GPT-5.6 Luna')
+const model = openai('gpt-5.6-luna')
 
 const supportRoutingSchema = z.object({
     route: z.enum(["direct", 'knowledge_base', 'diagnostics', 'web']).describe(`Use direct when you can answer with your current knowledge.
