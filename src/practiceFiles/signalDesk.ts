@@ -1,5 +1,8 @@
 import {z} from 'zod'
 import {generateText, Output} from 'ai'
+import {openai} from '@ai-sdk/openai'
+
+const model = oepnai('GPT-5.6 Luna')
 
 const supportRoutingSchema = z.object({
     route: z.enum(["direct", 'knowledge_base', 'diagnostics', 'web']).describe(`Use direct when you can answer with your current knowledge.
@@ -12,10 +15,10 @@ const supportRoutingSchema = z.object({
 
 type RoutingSchema = z.infer<typeof supportRoutingSchema>
 const userMessage: string = "My Node server keeps throwing ECONNREFUSED when it tries to connect to Postgres"
-
+console.log("signalDesk started")
 try{
 const {output} = await generateText({
-    model: 'ai-model',
+    model: model,
     output: Output.object({
         schema: supportRoutingSchema
     }),
@@ -30,21 +33,26 @@ async function runDiagnostics(msg:string):Promise<string>{
     const data:{diagnostic:string} = await response.json()
     return data.diagnostic
 }
+
+
 switch(output.route){
     case "direct":
         break
     case "knowledge_base":
-        context = await searchKnowledgeBase(userMessage)
+        // context = await searchKnowledgeBase(userMessage)
         break
     case 'web':
-        context = await searchWeb(userMessage)
+        // context = await searchWeb(userMessage)
         break
     case 'diagnostics':
         context = await runDiagnostics(userMessage)
 }
 
+console.log("route:", output.route)
+console.log("context:", context)
+
 const { text } = await generateText({
-  model: "ai-model",
+  model: model,
   prompt: `
     Answer the user's question.
 
@@ -61,6 +69,6 @@ const { text } = await generateText({
 
 }catch(error){
     console.error(error)
-    res.status(500).json({message: 'unable to process request'})
+    // res.status(500).json({message: 'unable to process request'})
 }
 

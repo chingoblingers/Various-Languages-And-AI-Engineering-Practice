@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^4.0.53",
     "ai": "^7.0.86",
     "nodemon": "^3.1.14",
     "react": "^19.2.8",
