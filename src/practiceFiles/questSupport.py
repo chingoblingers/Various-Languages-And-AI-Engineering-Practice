@@ -13,9 +13,10 @@ def embed_query(query:str) -> list[float]:
 @app.post("/search")
 def search(userRequest: SearchRequest):
    query_vector = embed_query(userRequest.query)
-   closest_vector = find_closest_vector(query_vector)
-   results = [] if closest_content is None else [closest_content]
-    return {"query": userRequest.query, "results": closest_content}
+   best_match = find_closest_vector(query_vector)
+   results = [] if best_match is None else [best_match['content']]
+   score = None if score is None else best_match[score]
+   return {"query": userRequest.query, "results": results, 'score': score}
 
 stored_vectors = [
     {"content": "We are the champions", "embedding": [0.1, 0.2, 0.2]},
