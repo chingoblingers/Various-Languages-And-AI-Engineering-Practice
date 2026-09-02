@@ -23,10 +23,18 @@ stored_vectors = [
     {"content": "Bacon pancakes", "embedding": [0.0, 0.1, 0.2]}
 ]
 
-def find_closest_vector(query_vector: list[float]) -> str|None:
-        for document in stored_vectors:
-            if query_vector == document['embedding']:
-                return document["content"]
+def find_closest_vector(query_vector: list[float]) -> dict[str, str | float] | None:
+    highest_score = -1.0
+    best_content = None
+    for document in stored_vectors:
+        score = cosine_similarity(query_vector, document['embedding'])
+        if score > highest_score:
+            highest_score = score
+            best_content = document["content"]
+    if best_content is None:
+        return None
+    return {"content": best_content, "score": highest_score}
+
 
 vector_a = [0.1, 0.2, 0.3]
 vector_b = [0.4, 0.5, 0.6]                
