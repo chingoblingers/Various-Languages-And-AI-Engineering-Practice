@@ -12,7 +12,8 @@ def embed_query(query:str) -> list[float]:
 @app.post("/search")
 def search(userRequest: SearchRequest):
    query_vector = embed_query(userRequest.query)
-    return {"query": userRequest.query, "results": []}
+   closest_vector = find_closest_vector(query_vector)
+    return {"query": userRequest.query, "results": closest_vector}
 
 stored_vectors = [
     [0.1, 0.2, 0.2],
