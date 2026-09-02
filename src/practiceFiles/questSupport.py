@@ -10,4 +10,6 @@ class SearchRequest(BaseModel):
 def search(userRequest: SearchRequest):
     return {"query": userRequest.query, "results": []}
 
+def embed_query(query:str):
+    return [0.1, 0.2, 0.3]
 
