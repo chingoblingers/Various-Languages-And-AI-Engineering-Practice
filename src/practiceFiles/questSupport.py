@@ -2,11 +2,16 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 import math
 import asyncio
+from typing import TypedDict
 
 app = FastAPI()
 
 class SearchRequest(BaseModel):
     query:str
+
+class StoredVector(TypedDict):
+    "content": str
+    "embedding": list[float]
 
 async def embed_query(query:str) -> list[float]:
     response = await client.embeddings.create(
@@ -23,8 +28,8 @@ async def search(userRequest: SearchRequest):
    score = None if best_match is None else best_match["score"]
    return {"query": userRequest.query, "results": results, 'score': score}
 
-async def store_vectors_and_data(documents: list[str])->list[dict]:
-    combined_data = []
+async def store_vectors_and_data(documents: list[str])->list[StoredVector]:
+    combined_data:list[StoredVector] = []
     for document in documents:
         embedding = await embed_query(document)
         stored_document = {'content': document, "embedding": embedding}
