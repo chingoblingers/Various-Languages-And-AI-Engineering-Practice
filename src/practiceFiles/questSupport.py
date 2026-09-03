@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import math
+import asyncio
 
 app = FastAPI()
 
@@ -22,11 +23,18 @@ async def search(userRequest: SearchRequest):
    score = None if best_match is None else best_match["score"]
    return {"query": userRequest.query, "results": results, 'score': score}
 
-stored_vectors = [
-    {"content": "We are the champions", "embedding": [0.1, 0.2, 0.2]},
-    {"content": "Hello World", "embedding": [0.8, 0.7, 0.9]},
-    {"content": "Bacon pancakes", "embedding": [0.0, 0.1, 0.2]}
-]
+async def store_vectors_and_data(documents: list[str])->list[dict]:
+    combined_data = []
+    for document in documents:
+        embedding = await embed_query(document)
+        stored_document = {'content': document, "embedding": embedding}
+        combined_data.append(stored_document)
+    return combined_data
+
+async def main():
+    stored_vectors = await store_vectors_and_data(documents)
+
+asyncio.run(main())
 
 def find_closest_vector(query_vector: list[float]) -> dict[str, str | float] | None:
     highest_score = -1.0
@@ -57,4 +65,3 @@ def cosine_similarity(vector_a: list[float],vector_b: list[float]) -> float:
     if magnitude_a == 0 or magnitude_b == 0:
         return 0.0
     return dot_product / (magnitude_a * magnitude_b)
-        
