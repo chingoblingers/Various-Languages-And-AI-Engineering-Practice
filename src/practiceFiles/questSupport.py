@@ -32,7 +32,7 @@ async def store_vectors_and_data(documents: list[str])->list[StoredVector]:
     combined_data:list[StoredVector] = []
     for document in documents:
         embedding = await embed_query(document)
-        stored_document = {'content': document, "embedding": embedding}
+        stored_document:StoredVector = {'content': document, "embedding": embedding}
         combined_data.append(stored_document)
     return combined_data
 
