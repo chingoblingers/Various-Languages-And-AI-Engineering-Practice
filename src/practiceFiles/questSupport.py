@@ -7,15 +7,19 @@ app = FastAPI()
 class SearchRequest(BaseModel):
     query:str
 
-def embed_query(query:str) -> list[float]:
-    return [0.1, 0.2, 0.3]
+async def embed_query(query:str) -> list[float]:
+    response = await client.embeddings.create(
+        model: "ai-model",
+        input: query
+    )
+    return response.data[0].embedding
 
 @app.post("/search")
-def search(userRequest: SearchRequest):
-   query_vector = embed_query(userRequest.query)
+async def search(userRequest: SearchRequest):
+   query_vector = await embed_query(userRequest.query)
    best_match = find_closest_vector(query_vector)
    results = [] if best_match is None else [best_match['content']]
-   score = None if score is None else best_match[score]
+   score = None if best_match is None else best_match["score"]
    return {"query": userRequest.query, "results": results, 'score': score}
 
 stored_vectors = [
@@ -50,5 +54,7 @@ def cosine_similarity(vector_a: list[float],vector_b: list[float]) -> float:
         squared_total_b += b**2
     magnitude_a = math.sqrt(squared_total_a)
     magnitude_b = math.sqrt(squared_total_b)
+    if magnitude_a == 0 or magnitude_b == 0:
+        return 0.0
     return dot_product / (magnitude_a * magnitude_b)
         
