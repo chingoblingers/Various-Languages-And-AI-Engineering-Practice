@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.53",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "ai": "^7.0.86",
     "dotenv": "^17.4.2",
     "nodemon": "^3.1.14",
