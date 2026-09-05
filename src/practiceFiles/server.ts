@@ -14,16 +14,24 @@ await server.connect(transport)
 
 connectedServer()
 
+const knownIssues = [
+  "game crashes on startup",
+  "controller not detected",
+  "low fps after update"
+]
+
 server.tool(
     'searchKnownIssue',
     'search the knowledge base for the requested item',
     {"issue": z.string().describe('string from the user used to search the knowledge base')},
     async({issue}) =>{
+        const loweredUserIssue = issue.toLowerCase()
+        const userIssue = knownIssues.find(problem => problem.toLowerCase().includes(loweredUserIssue)  || loweredUserIssue.includes(problem.toLowerCase()) )?? "No match found"
         return {
             content: [
                 {
                     "type": 'text',
-                    "text": issue
+                    "text": userIssue
                     
                 }
             ]
