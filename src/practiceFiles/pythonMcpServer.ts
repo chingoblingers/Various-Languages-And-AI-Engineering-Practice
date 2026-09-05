@@ -47,6 +47,7 @@ server.tool(
     'gets the requirements of the current system',
     {"game": z.string().describe('name of the game the user would like the system requirements for')},
     async({game}) =>{
+        try{
         const response =  await fetch('http://127.0.0.1:8000/requirements', {"method": 'POST', "headers": {'Content-Type': 'application/json'}, 'body': JSON.stringify({game})})
         const data: RequirementsResponse = await response.json()
         return {
@@ -57,5 +58,19 @@ server.tool(
                 }
             ]
         }
+
+        }catch(error){
+        console.error(error)
+        return {
+            content : [
+                {
+                    "type": 'text',
+                    'text': "Unable to reach the requirements service"
+                }
+            ]
+        }
+
+        }
+        
     }
 )
