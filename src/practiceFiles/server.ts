@@ -38,3 +38,18 @@ server.tool(
         }
     }
 )
+server.tool(
+    'getSystemRequirements',
+    'gets the requirements of the current system',
+    {"game": z.string().describe('name of the game the user would like the system requirements for')},
+    async({game}) =>{
+        return {
+            content: [
+                {
+                    "type": 'text',
+                    'text': `reqiurements lookup requested for ${game}`
+                }
+            ]
+        }
+    }
+)
