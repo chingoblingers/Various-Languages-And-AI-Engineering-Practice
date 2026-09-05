@@ -20,6 +20,10 @@ const knownIssues = [
   "low fps after update"
 ]
 
+type RequirementsResponse = {
+  requirements: string
+}
+
 server.tool(
     'searchKnownIssue',
     'search the knowledge base for the requested item',
@@ -43,11 +47,13 @@ server.tool(
     'gets the requirements of the current system',
     {"game": z.string().describe('name of the game the user would like the system requirements for')},
     async({game}) =>{
+        const response =  await fetch('http://127.0.0.1:8000/requirements', {"method": 'POST', "headers": {'Content-Type': 'application/json'}, 'body': JSON.stringify({game})})
+        const data: RequirementsResponse = await response.json()
         return {
             content: [
                 {
                     "type": 'text',
-                    'text': `reqiurements lookup requested for ${game}`
+                    'text': data.requirements
                 }
             ]
         }
