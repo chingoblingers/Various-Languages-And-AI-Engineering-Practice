@@ -12,5 +12,3 @@ def systemRequirements(game:RequirementsRequest):
         return {'requirements': "dd2 requirements"}
     else:
         return {'requirements': 'requirements not found'}
-
-   
