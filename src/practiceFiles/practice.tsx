@@ -186,3 +186,45 @@
 //   }
 
 // }
+
+async function getPackageSummary(package:string):Promise<string>{
+  try{
+    const info = await fetchPackageInfo(package)
+    if (!info){
+      return "package not found"
+    }
+    const dependenciesArrCOnversion = Object.entries(info.dependencies)
+     return `${info.name}, ${info.version} has ${dependenciesArrCOnversion.length} dependencies.`
+  }catch(error){
+    console.log(error)
+    throw error
+  }
+}
+
+const limit = Math.min(100, Math.max(1, Number(limitQuery)))
+
+
+
+type Pagination = {
+    page: number
+    limit: number
+    offset: number
+}
+
+function getPagination(pageQuery: string, limitQuery: string): Pagination {
+  const pageNumber = Number(pageQuery)
+  const limitNumber = Number(limitQuery)
+  let page = Math.max(1, pageNumber)
+  let limit = Math.max(1, limitNumber)
+  if(Number.isNaN(pageNumber) || !Number.isInteger(pageNumber)){
+    page = 1 
+  }
+  if(Number.isNaN(limitNumber) || !Number.isInteger(limitNumber) || 0){
+    limit = 10 
+  }
+  
+  const offset = page * limit - limit 
+
+  return {page,limit, offset}
+  
+}
